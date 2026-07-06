@@ -1,12 +1,11 @@
 import AppKit
-import QuickLook
 import SwiftUI
 
 struct FileListView: View {
     @EnvironmentObject private var appState: AppState
     @State private var filterText: String = ""
     @State private var selectedFileURL: URL?
-    @State private var quickLookURL: URL?
+    private let quickLook = QuickLookController.shared
 
     private var tagColorLookup: [String: Int?] {
         Dictionary(uniqueKeysWithValues: appState.tagRepository.tags.map { ($0.name, $0.colorIndex) })
@@ -78,11 +77,19 @@ struct FileListView: View {
             } primaryAction: { urls in
                 for url in urls { NSWorkspace.shared.open(url) }
             }
-            .quickLookPreview($quickLookURL, in: filteredFiles.map(\.url))
             .onKeyPress(.space) {
                 guard let selectedFileURL else { return .ignored }
-                quickLookURL = selectedFileURL
+                if quickLook.isVisible {
+                    quickLook.close()
+                } else {
+                    quickLook.onCurrentItemChange = { self.selectedFileURL = $0 }
+                    quickLook.present(urls: filteredFiles.map(\.url), currentItem: selectedFileURL)
+                }
                 return .handled
+            }
+            .onChange(of: selectedFileURL) { _, newValue in
+                guard let newValue else { return }
+                quickLook.updateCurrentItem(newValue)
             }
         }
     }

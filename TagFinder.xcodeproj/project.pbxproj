@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0BE5621BE4E76EFE8196AB2F /* FinderTagColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 486831EE4819A1AA074A8D38 /* FinderTagColor.swift */; };
+		0F26BCA62957E2F213BCA52F /* QuickLookController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 477977737BF4B43BA0987CF9 /* QuickLookController.swift */; };
 		0F86164588001F6B14C7D236 /* SpotlightQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B84829137C8DB124674AA1B /* SpotlightQuery.swift */; };
 		130D165C6424E6D168D6DE38 /* FullDiskAccessPromptView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A2BDB4B9DA00C5B99918161 /* FullDiskAccessPromptView.swift */; };
 		171E0BB67D67ED3D69584F97 /* TagSidebarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8764A9EBBBC778831756DF8 /* TagSidebarView.swift */; };
@@ -45,6 +46,7 @@
 		12195800EDE0FCEF221E6384 /* TagChipView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagChipView.swift; sourceTree = "<group>"; };
 		1B84829137C8DB124674AA1B /* SpotlightQuery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotlightQuery.swift; sourceTree = "<group>"; };
 		3889F7452FB029334AAB8DC4 /* TagFinderApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagFinderApp.swift; sourceTree = "<group>"; };
+		477977737BF4B43BA0987CF9 /* QuickLookController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickLookController.swift; sourceTree = "<group>"; };
 		486831EE4819A1AA074A8D38 /* FinderTagColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinderTagColor.swift; sourceTree = "<group>"; };
 		599153824268F418F2C8261A /* FileSearchQueryStringTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileSearchQueryStringTests.swift; sourceTree = "<group>"; };
 		64C7221240F935724DCCB138 /* TagFinderTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TagFinderTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -117,6 +119,7 @@
 				B77C9BB6501F84203464B42F /* ContentView.swift */,
 				7E975D0BD9260326F6E3ABDD /* FileListView.swift */,
 				8A2BDB4B9DA00C5B99918161 /* FullDiskAccessPromptView.swift */,
+				477977737BF4B43BA0987CF9 /* QuickLookController.swift */,
 				12195800EDE0FCEF221E6384 /* TagChipView.swift */,
 				F8764A9EBBBC778831756DF8 /* TagSidebarView.swift */,
 			);
@@ -238,6 +241,7 @@
 				D362CAAA1B2A2FE6507AB2B4 /* FullDiskAccessChecker.swift in Sources */,
 				130D165C6424E6D168D6DE38 /* FullDiskAccessPromptView.swift in Sources */,
 				1C5CA94B79FC97B04F7017C2 /* MatchMode.swift in Sources */,
+				0F26BCA62957E2F213BCA52F /* QuickLookController.swift in Sources */,
 				0F86164588001F6B14C7D236 /* SpotlightQuery.swift in Sources */,
 				4BF4216B9E7944D4550FD48F /* TagChipView.swift in Sources */,
 				F893761A9E5A464FCBC6D892 /* TagFinderApp.swift in Sources */,
