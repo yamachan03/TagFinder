@@ -1,35 +1,37 @@
 # TagFinder
 
-Finderで付けたタグからファイルを横断検索するmacOSアプリです。サイドバーのタグ一覧から複数タグを選んで、AND（すべてのタグを持つ）/ OR（いずれかのタグを持つ）でファイルを絞り込めます。
+[日本語](README.ja.md)
 
-## 機能
+A macOS app for searching files by their Finder tags. Pick multiple tags from the sidebar and narrow down files with AND (has all selected tags) / OR (has any selected tag) matching.
 
-- 全ローカルボリューム（外付けドライブ含む）のFinderタグを一覧表示（ファイル数付き）
-- 複数タグ選択によるAND / OR絞り込み検索
-- タグ名・ファイル名それぞれのインクリメンタル絞り込み
-- 検索結果のファイルを選択してスペースキーでQuick Lookプレビュー
-- ダブルクリックで開く、右クリックで「Finderで表示」「パスをコピー」
+## Features
 
-## 動作要件
+- Lists every Finder tag on all local volumes (including external drives) with file counts
+- AND / OR filtering by multiple selected tags
+- Incremental filtering by tag name and by file name
+- Quick Look preview: select a result and press the space bar
+- Double-click to open, right-click for "Reveal in Finder" / "Copy Path"
 
-- macOS 15.6以降
-- **フルディスクアクセス**の許可（システム設定 > プライバシーとセキュリティ > フルディスクアクセス）
-  - Spotlight経由でホーム外・外付けボリュームのタグを検索するために必要です
-- 検索対象のボリュームでSpotlightインデックスが有効であること
+## Requirements
 
-## ビルド
+- macOS 15.6 or later
+- **Full Disk Access** permission (System Settings > Privacy & Security > Full Disk Access)
+  - Required to search tags outside your home folder and on external volumes via Spotlight
+- Spotlight indexing must be enabled on the volumes you want to search
 
-Xcodeで `TagFinder.xcodeproj` を開いてビルドするだけです。プロジェクトファイルは [XcodeGen](https://github.com/yonaskolb/XcodeGen) で生成しているため、ファイル構成を変えた場合は `xcodegen` を再実行してください。
+## Building
+
+Open `TagFinder.xcodeproj` in Xcode and build. The project file is generated with [XcodeGen](https://github.com/yonaskolb/XcodeGen), so re-run `xcodegen` after changing the file layout.
 
 ```sh
-xcodegen                                       # プロジェクト再生成（ファイル追加時のみ）
+xcodegen                                       # regenerate project (only after adding files)
 xcodebuild -scheme TagFinder -configuration Release build
 ```
 
-## 実装メモ
+## Implementation notes
 
-Spotlight検索には `NSMetadataQuery` ではなく、`mdfind` と同じ低レベルの **MDQuery C API**（`Logic/SpotlightQuery.swift`）を使っています。開発環境（macOS 26.5）では `NSMetadataQuery` がフルディスクアクセス許可済みでもすべてのクエリに対して0件を返すためです。クエリ文字列の組み立てはユニットテストでカバーしています。
+Spotlight queries go through the low-level **MDQuery C API** (`Logic/SpotlightQuery.swift`) — the same engine `mdfind` uses — instead of `NSMetadataQuery`. On the development machine (macOS 26.5), `NSMetadataQuery` returns zero results for every query even with Full Disk Access granted. Query-string construction, tag aggregation, and tag-color parsing are covered by unit tests.
 
-## ライセンス
+## License
 
 [MIT License](LICENSE)
