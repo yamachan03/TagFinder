@@ -1,0 +1,63 @@
+name: TagFinder
+options:
+  bundleIdPrefix: biz.yamayama
+  deploymentTarget:
+    macOS: "15.6"
+settings:
+  base:
+    SWIFT_VERSION: "5.0"
+    DEVELOPMENT_TEAM: X3DM77VYGG
+    CODE_SIGN_STYLE: Automatic
+    MARKETING_VERSION: "1.0"
+    CURRENT_PROJECT_VERSION: "1"
+targets:
+  TagFinder:
+    type: application
+    platform: macOS
+    deploymentTarget: "15.6"
+    sources:
+      - path: TagFinderApp.swift
+      - path: Models
+      - path: Logic
+      - path: Views
+      - path: Assets.xcassets
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: biz.yamayama.TagFinder
+        PRODUCT_NAME: "$(TARGET_NAME)"
+        GENERATE_INFOPLIST_FILE: YES
+        INFOPLIST_KEY_NSHumanReadableCopyright: ""
+        ENABLE_APP_SANDBOX: NO
+        ENABLE_HARDENED_RUNTIME: YES
+        CODE_SIGN_ENTITLEMENTS: TagFinder.entitlements
+        ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        COMBINE_HIDPI_IMAGES: YES
+        SWIFT_EMIT_LOC_STRINGS: YES
+    info:
+      path: Generated-Info.plist
+      properties: {}
+  TagFinderTests:
+    type: bundle.unit-test
+    platform: macOS
+    deploymentTarget: "15.6"
+    sources:
+      - path: TagFinderTests
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: biz.yamayama.TagFinderTests
+        GENERATE_INFOPLIST_FILE: YES
+    dependencies:
+      - target: TagFinder
+schemes:
+  TagFinder:
+    build:
+      targets:
+        TagFinder: all
+        TagFinderTests: [test]
+    run:
+      config: Debug
+    test:
+      config: Debug
+      targets:
+        - TagFinderTests

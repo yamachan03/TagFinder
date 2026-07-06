@@ -1,0 +1,115 @@
+import AppKit
+import QuickLook
+import SwiftUI
+
+struct FileListView: View {
+    @EnvironmentObject private var appState: AppState
+    @State private var filterText: String = ""
+    @State private var selectedFileURL: URL?
+    @State private var quickLookURL: URL?
+
+    private var tagColorLookup: [String: Int?] {
+        Dictionary(uniqueKeysWithValues: appState.tagRepository.tags.map { ($0.name, $0.colorIndex) })
+    }
+
+    private var filteredFiles: [FoundFile] {
+        guard !filterText.isEmpty else { return appState.fileSearchController.files }
+        return appState.fileSearchController.files.filter {
+            $0.displayName.localizedCaseInsensitiveContains(filterText)
+        }
+    }
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            header
+            Divider()
+            content
+        }
+        .searchable(text: $filterText, prompt: "ファイル名で絞り込み")
+    }
+
+    @ViewBuilder
+    private var header: some View {
+        if !appState.selectedTagNames.isEmpty {
+            HStack {
+                Text(headerText)
+                    .font(.headline)
+                Spacer()
+            }
+            .padding()
+        }
+    }
+
+    private var headerText: String {
+        let joiner = appState.matchMode == .and ? " AND " : " OR "
+        let tagList = appState.selectedTagNames.sorted().joined(separator: joiner)
+        return "\(tagList) · \(filteredFiles.count)件"
+    }
+
+    @ViewBuilder
+    private var content: some View {
+        if appState.selectedTagNames.isEmpty {
+            emptyState(message: "タグを選択してください")
+        } else if appState.fileSearchController.isSearching {
+            ProgressView()
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+        } else if filteredFiles.isEmpty {
+            emptyState(message: "一致するファイルがありません")
+        } else {
+            List(filteredFiles, selection: $selectedFileURL) { file in
+                fileRow(file)
+                    .tag(file.url)
+            }
+            .quickLookPreview($quickLookURL, in: filteredFiles.map(\.url))
+            .onKeyPress(.space) {
+                guard let selectedFileURL else { return .ignored }
+                quickLookURL = selectedFileURL
+                return .handled
+            }
+        }
+    }
+
+    private func emptyState(message: String) -> some View {
+        Text(message)
+            .foregroundStyle(.secondary)
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+    }
+
+    @ViewBuilder
+    private func fileRow(_ file: FoundFile) -> some View {
+        HStack {
+            Image(nsImage: file.icon)
+                .resizable()
+                .frame(width: 24, height: 24)
+            VStack(alignment: .leading) {
+                Text(file.displayName)
+                Text(file.containingFolder)
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
+            Spacer()
+            HStack(spacing: 6) {
+                ForEach(file.tags, id: \.self) { tagName in
+                    TagChipView(name: tagName, colorIndex: tagColorLookup[tagName] ?? nil)
+                }
+            }
+        }
+        .contentShape(Rectangle())
+        .onTapGesture(count: 2) {
+            NSWorkspace.shared.open(file.url)
+        }
+        .contextMenu {
+            Button("Finderで表示") {
+                NSWorkspace.shared.activateFileViewerSelecting([file.url])
+            }
+            Button("開く") {
+                NSWorkspace.shared.open(file.url)
+            }
+            Button("パスをコピー") {
+                let pasteboard = NSPasteboard.general
+                pasteboard.clearContents()
+                pasteboard.setString(file.url.path, forType: .string)
+            }
+        }
+    }
+}
