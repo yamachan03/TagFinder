@@ -60,6 +60,24 @@ struct FileListView: View {
                 fileRow(file)
                     .tag(file.url)
             }
+            // Row-level tap gestures would intercept single clicks and break List
+            // selection, so double-click (primaryAction) and the right-click menu
+            // are attached selection-based instead.
+            .contextMenu(forSelectionType: URL.self) { urls in
+                Button("Finderで表示") {
+                    NSWorkspace.shared.activateFileViewerSelecting(Array(urls))
+                }
+                Button("開く") {
+                    for url in urls { NSWorkspace.shared.open(url) }
+                }
+                Button("パスをコピー") {
+                    let pasteboard = NSPasteboard.general
+                    pasteboard.clearContents()
+                    pasteboard.setString(urls.map(\.path).joined(separator: "\n"), forType: .string)
+                }
+            } primaryAction: { urls in
+                for url in urls { NSWorkspace.shared.open(url) }
+            }
             .quickLookPreview($quickLookURL, in: filteredFiles.map(\.url))
             .onKeyPress(.space) {
                 guard let selectedFileURL else { return .ignored }
@@ -92,23 +110,6 @@ struct FileListView: View {
                 ForEach(file.tags, id: \.self) { tagName in
                     TagChipView(name: tagName, colorIndex: tagColorLookup[tagName] ?? nil)
                 }
-            }
-        }
-        .contentShape(Rectangle())
-        .onTapGesture(count: 2) {
-            NSWorkspace.shared.open(file.url)
-        }
-        .contextMenu {
-            Button("Finderで表示") {
-                NSWorkspace.shared.activateFileViewerSelecting([file.url])
-            }
-            Button("開く") {
-                NSWorkspace.shared.open(file.url)
-            }
-            Button("パスをコピー") {
-                let pasteboard = NSPasteboard.general
-                pasteboard.clearContents()
-                pasteboard.setString(file.url.path, forType: .string)
             }
         }
     }
