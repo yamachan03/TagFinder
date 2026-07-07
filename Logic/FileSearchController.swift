@@ -16,7 +16,7 @@ final class FileSearchController: ObservableObject {
         generation += 1
         let currentGeneration = generation
 
-        guard let queryString = expression?.queryString else {
+        guard let queryString = expression?.searchQueryString else {
             files = []
             isSearching = false
             return

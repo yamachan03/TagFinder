@@ -11,7 +11,13 @@
 > B案（グループビルダー）で実装。`Models/TagExpression.swift`（AST・クエリ/表示文字列の再帰生成）、
 > `Models/ExpressionGroup.swift`、`Views/ExpressionBuilderView.swift` を参照。
 > シンプルモードも内部的にASTへ統一済み（`AppState.currentExpression`）。
-> NOT対応と検索条件の保存は未実装（将来拡張）。
+>
+> **NOT対応も実装済み（2026-07-07）**: 当初の想定に反し、このmacOS（26.5）ではMDQuery/mdfindの
+> `!(...)`否定構文がネイティブに動作することが実測で判明（`mdfind "A && !(B)"` が正しく除外する）。
+> このため後段フィルタは不要で、`.not`ケースを`!(...)`に直接コンパイルしている。素のNOTが
+> タグなしファイルまで拾わないよう、NOT含有時はクエリ全体を `&& kMDItemUserTags == '*'` で
+> タグ付きファイルに制限（`searchQueryString`）。UIはチップ本体クリックでNOT切替（赤表示）、✕で削除。
+> 検索条件の保存は未実装（将来拡張）。
 
 ### 実現性
 

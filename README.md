@@ -8,7 +8,7 @@ A macOS app for searching files by their Finder tags. Pick multiple tags from th
 
 - Lists every Finder tag on all local volumes (including external drives) with file counts
 - AND / OR filtering by multiple selected tags
-- Advanced search mode: build compound boolean expressions like `(A AND B) OR (C AND D) OR E` with a group-based condition builder
+- Advanced search mode: build compound boolean expressions like `(A AND NOT B) OR (C AND D) OR E` with a group-based condition builder — click a chip in a group to toggle NOT (exclusion)
 - Incremental filtering by tag name and by file name
 - Quick Look preview: select a result and press the space bar (up/down arrows switch the previewed file)
 - Tag editing palette (toolbar button, Cmd+T, or T while Quick Look is open): toggle existing tags on the previewed file, or create a new tag with a color — existing tag colors on the file are preserved

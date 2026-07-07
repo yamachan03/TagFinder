@@ -57,14 +57,14 @@ struct ExpressionBuilderView: View {
             .labelsHidden()
             .frame(width: 100)
 
-            if group.tags.isEmpty {
+            if group.terms.isEmpty {
                 Text(language.localized("Click sidebar tags to add"))
                     .font(.caption)
                     .foregroundStyle(.secondary)
             } else {
                 FlowLayout(spacing: 4) {
-                    ForEach(group.tags, id: \.self) { name in
-                        groupTagChip(name, groupID: group.id)
+                    ForEach(group.terms) { term in
+                        groupTagChip(term, groupID: group.id)
                     }
                 }
             }
@@ -93,25 +93,40 @@ struct ExpressionBuilderView: View {
         }
     }
 
+    /// Chip body click toggles NOT (exclusion); the trailing x removes the term.
     @ViewBuilder
-    private func groupTagChip(_ name: String, groupID: UUID) -> some View {
+    private func groupTagChip(_ term: GroupTerm, groupID: UUID) -> some View {
         HStack(spacing: 4) {
+            if term.negated {
+                Text("NOT")
+                    .font(.caption2.bold())
+                    .foregroundStyle(.red)
+            }
             Circle()
-                .fill(FinderTagColor.color(for: tagColorLookup[name] ?? nil))
+                .fill(FinderTagColor.color(for: tagColorLookup[term.name] ?? nil))
                 .frame(width: 7, height: 7)
-            Text(name)
+            Text(term.name)
                 .font(.callout)
                 .lineLimit(1)
-            Image(systemName: "xmark")
-                .font(.caption2)
-                .foregroundStyle(.secondary)
+            Button {
+                appState.removeTag(term.name, fromGroup: groupID)
+            } label: {
+                Image(systemName: "xmark")
+                    .font(.caption2)
+                    .foregroundStyle(.secondary)
+            }
+            .buttonStyle(.plain)
         }
         .padding(.horizontal, 8)
         .padding(.vertical, 3)
-        .background(.quaternary.opacity(0.6), in: Capsule())
+        .background(
+            term.negated ? AnyShapeStyle(Color.red.opacity(0.18)) : AnyShapeStyle(.quaternary.opacity(0.6)),
+            in: Capsule()
+        )
         .contentShape(Capsule())
         .onTapGesture {
-            appState.removeTag(name, fromGroup: groupID)
+            appState.toggleNegation(term.name, inGroup: groupID)
         }
+        .help(language.localized("Toggle NOT hint"))
     }
 }

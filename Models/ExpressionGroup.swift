@@ -1,18 +1,30 @@
 import Foundation
 
-/// One group in the advanced-search expression builder: a flat AND/OR of tag
-/// names. Groups are combined by AppState.outerMode into the full expression --
-/// the UI deliberately builds two levels (e.g. OR of AND-groups), which covers
-/// forms like `(A and B) or (C and D) or E`; TagExpression itself supports
-/// arbitrary nesting.
+/// One tag term inside a group; `negated` turns it into a NOT (exclusion).
+struct GroupTerm: Identifiable, Equatable {
+    var name: String
+    var negated = false
+
+    var id: String { name }
+
+    var expression: TagExpression {
+        negated ? .not(.tag(name)) : .tag(name)
+    }
+}
+
+/// One group in the advanced-search expression builder: a flat AND/OR of
+/// (possibly negated) tag terms. Groups are combined by AppState.outerMode into
+/// the full expression -- the UI deliberately builds two levels (e.g. OR of
+/// AND-groups), which covers forms like `(A and not B) or (C and D) or E`;
+/// TagExpression itself supports arbitrary nesting.
 struct ExpressionGroup: Identifiable, Equatable {
     let id = UUID()
     var mode: MatchMode = .and
-    var tags: [String] = []
+    var terms: [GroupTerm] = []
 
     var expression: TagExpression? {
-        guard !tags.isEmpty else { return nil }
-        let leaves = tags.map(TagExpression.tag)
+        guard !terms.isEmpty else { return nil }
+        let leaves = terms.map(\.expression)
         return mode == .and ? .and(leaves) : .or(leaves)
     }
 }

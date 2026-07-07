@@ -94,13 +94,65 @@ final class TagExpressionTests: XCTestCase {
         XCTAssertEqual(expr.displayString, "A AND B")
     }
 
+    // MARK: - NOT
+
+    func testNotLeafQuery() {
+        XCTAssertEqual(
+            TagExpression.not(.tag("Work")).queryString,
+            "!(kMDItemUserTags == 'Work')"
+        )
+    }
+
+    func testAndWithNotTerm() {
+        let expr = TagExpression.and([.tag("Urgent"), .not(.tag("Personal"))])
+        XCTAssertEqual(
+            expr.queryString,
+            "kMDItemUserTags == 'Urgent' && !(kMDItemUserTags == 'Personal')"
+        )
+        XCTAssertEqual(expr.displayString, "Urgent AND NOT Personal")
+    }
+
+    func testNotOfCompoundDisplayGetsParens() {
+        let expr = TagExpression.not(.or([.tag("A"), .tag("B")]))
+        XCTAssertEqual(expr.displayString, "NOT (A OR B)")
+        XCTAssertEqual(expr.queryString, "!(kMDItemUserTags == 'A' || kMDItemUserTags == 'B')")
+    }
+
+    func testNotOfEmptyCompoundIsDropped() {
+        XCTAssertNil(TagExpression.not(.and([])).queryString)
+        let expr = TagExpression.and([.tag("A"), .not(.and([]))])
+        XCTAssertEqual(expr.queryString, "kMDItemUserTags == 'A'")
+    }
+
+    func testSearchQueryStringRestrictsToTaggedFilesOnlyWhenNotPresent() {
+        let plain = TagExpression.and([.tag("A"), .tag("B")])
+        XCTAssertEqual(plain.searchQueryString, plain.queryString)
+
+        let withNot = TagExpression.and([.tag("Urgent"), .not(.tag("Personal"))])
+        XCTAssertEqual(
+            withNot.searchQueryString,
+            "(kMDItemUserTags == 'Urgent' && !(kMDItemUserTags == 'Personal')) && kMDItemUserTags == '*'"
+        )
+    }
+
+    func testContainsNot() {
+        XCTAssertFalse(TagExpression.and([.tag("A"), .or([.tag("B")])]).containsNot)
+        XCTAssertTrue(TagExpression.or([.tag("A"), .and([.not(.tag("B"))])]).containsNot)
+    }
+
     // MARK: - ExpressionGroup mapping
 
     func testExpressionGroupProducesFlatCompound() {
         var group = ExpressionGroup()
-        group.tags = ["A", "B"]
+        group.terms = [GroupTerm(name: "A"), GroupTerm(name: "B")]
         group.mode = .or
         XCTAssertEqual(group.expression, .or([.tag("A"), .tag("B")]))
+    }
+
+    func testNegatedGroupTermMapsToNot() {
+        var group = ExpressionGroup()
+        group.terms = [GroupTerm(name: "A"), GroupTerm(name: "B", negated: true)]
+        XCTAssertEqual(group.expression, .and([.tag("A"), .not(.tag("B"))]))
     }
 
     func testEmptyExpressionGroupProducesNil() {

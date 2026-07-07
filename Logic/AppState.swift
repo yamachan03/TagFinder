@@ -38,7 +38,8 @@ final class AppState: ObservableObject {
             if searchMode == .advanced && expressionGroups.isEmpty {
                 // Carry the simple selection over as the first group so the
                 // transition feels continuous.
-                let seeded = ExpressionGroup(mode: matchMode, tags: selectedTagNames.sorted())
+                let terms = selectedTagNames.sorted().map { GroupTerm(name: $0) }
+                let seeded = ExpressionGroup(mode: matchMode, terms: terms)
                 expressionGroups = [seeded]
                 activeGroupID = seeded.id
             }
@@ -86,7 +87,15 @@ final class AppState: ObservableObject {
 
     func removeTag(_ name: String, fromGroup id: UUID) {
         guard let index = expressionGroups.firstIndex(where: { $0.id == id }) else { return }
-        expressionGroups[index].tags.removeAll { $0 == name }
+        expressionGroups[index].terms.removeAll { $0.name == name }
+    }
+
+    /// Flips a term between inclusion and NOT (exclusion) within its group.
+    func toggleNegation(_ name: String, inGroup id: UUID) {
+        guard let group = expressionGroups.firstIndex(where: { $0.id == id }),
+              let term = expressionGroups[group].terms.firstIndex(where: { $0.name == name })
+        else { return }
+        expressionGroups[group].terms[term].negated.toggle()
     }
 
     /// Sidebar tag click in advanced mode: toggles the tag within the active
@@ -95,16 +104,16 @@ final class AppState: ObservableObject {
         if expressionGroups.isEmpty { addGroup() }
         let index = expressionGroups.firstIndex(where: { $0.id == activeGroupID })
             ?? expressionGroups.indices.last!
-        if expressionGroups[index].tags.contains(name) {
-            expressionGroups[index].tags.removeAll { $0 == name }
+        if expressionGroups[index].terms.contains(where: { $0.name == name }) {
+            expressionGroups[index].terms.removeAll { $0.name == name }
         } else {
-            expressionGroups[index].tags.append(name)
+            expressionGroups[index].terms.append(GroupTerm(name: name))
         }
     }
 
     /// Whether the tag appears anywhere in the advanced expression (sidebar highlight).
     func expressionContains(_ name: String) -> Bool {
-        expressionGroups.contains { $0.tags.contains(name) }
+        expressionGroups.contains { $0.terms.contains { $0.name == name } }
     }
 
     /// The search-result row currently selected in the file list. Lives here (not
@@ -141,7 +150,7 @@ final class AppState: ObservableObject {
     var selectionIsEmpty: Bool {
         switch searchMode {
         case .simple: return selectedTagNames.isEmpty
-        case .advanced: return expressionGroups.allSatisfy { $0.tags.isEmpty }
+        case .advanced: return expressionGroups.allSatisfy { $0.terms.isEmpty }
         }
     }
 

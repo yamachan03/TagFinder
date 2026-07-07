@@ -73,6 +73,7 @@ final class LanguageManager: ObservableObject {
         "Add Group": [.english: "Add Group", .japanese: "グループを追加"],
         "Groups combined with": [.english: "Combine groups with", .japanese: "グループ間の結合"],
         "Click sidebar tags to add": [.english: "Click tags in the sidebar to add", .japanese: "サイドバーのタグをクリックして追加"],
+        "Toggle NOT hint": [.english: "Click to toggle NOT (exclude); x removes", .japanese: "クリックでNOT（除外）を切替、✕で削除"],
 
         // Tag palette
         "Edit Tags": [.english: "Edit Tags", .japanese: "タグを編集"],
