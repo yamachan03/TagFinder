@@ -66,6 +66,13 @@ final class LanguageManager: ObservableObject {
         "File Display": [.english: "File Display", .japanese: "ファイルの表示"],
         "Name, path, and tags": [.english: "Name, path, and tags", .japanese: "名前・パス・タグ"],
         "Name and path only": [.english: "Name and path only", .japanese: "名前・パスのみ"],
+
+        // Tag palette
+        "Edit Tags": [.english: "Edit Tags", .japanese: "タグを編集"],
+        "No file selected": [.english: "No file selected", .japanese: "ファイルが選択されていません"],
+        "New tag name": [.english: "New tag name", .japanese: "新規タグ名"],
+        "Add": [.english: "Add", .japanese: "追加"],
+        "Could not update tags": [.english: "Could not update tags", .japanese: "タグを更新できませんでした"],
     ]
 
     func localized(_ key: String) -> String {

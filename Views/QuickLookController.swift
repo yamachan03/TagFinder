@@ -23,6 +23,14 @@ final class QuickLookController: NSObject, QLPreviewPanelDataSource, QLPreviewPa
         QLPreviewPanel.sharedPreviewPanelExists() && QLPreviewPanel.shared().isVisible
     }
 
+    /// URL of the item currently shown in the panel, if it is open.
+    var currentItemURL: URL? {
+        guard isVisible, let panel = QLPreviewPanel.shared() else { return nil }
+        let index = panel.currentPreviewItemIndex
+        guard urls.indices.contains(index) else { return nil }
+        return urls[index]
+    }
+
     func present(urls: [URL], currentItem: URL) {
         self.urls = urls
         guard let panel = QLPreviewPanel.shared() else { return }
@@ -72,6 +80,13 @@ final class QuickLookController: NSObject, QLPreviewPanelDataSource, QLPreviewPa
             return true
         case 49: // space toggles the panel closed, like Finder
             close()
+            return true
+        case 17: // T toggles the tag palette without leaving the preview.
+            // (Command-modified shortcuts are routed to the menu before reaching
+            // this delegate, so no modifier check is needed here.)
+            MainActor.assumeIsolated {
+                TagPaletteController.shared.toggle()
+            }
             return true
         default:
             return false

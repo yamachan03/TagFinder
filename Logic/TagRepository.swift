@@ -52,6 +52,25 @@ final class TagRepository: ObservableObject {
         isLoading = false
     }
 
+    /// Applies a local tag add/remove (from the in-app tag editor) to the discovered
+    /// tag list without waiting for Spotlight to reindex: adjusts the file count,
+    /// inserts a brand-new tag, and drops a tag whose count reaches zero.
+    func applyLocalTagChange(name: String, delta: Int, colorIndexIfNew: Int?, representativeIfNew: URL) {
+        if let index = tags.firstIndex(where: { $0.name == name }) {
+            let existing = tags[index]
+            let newCount = existing.fileCount + delta
+            if newCount <= 0 {
+                tags.remove(at: index)
+            } else {
+                tags[index] = FinderTag(name: name, colorIndex: existing.colorIndex, fileCount: newCount)
+            }
+        } else if delta > 0 {
+            tags.append(FinderTag(name: name, colorIndex: colorIndexIfNew, fileCount: delta))
+            tags.sort { $0.name.localizedStandardCompare($1.name) == .orderedAscending }
+        }
+        lastGatherCount += delta
+    }
+
     private static func colorIndex(forTag name: String, representativeFile: [String: URL]) -> Int? {
         guard let url = representativeFile[name],
               let entries = ExtendedAttributeReader.rawUserTagsPropertyList(at: url) else { return nil }

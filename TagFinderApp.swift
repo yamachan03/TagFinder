@@ -13,6 +13,14 @@ struct TagFinderApp: App {
                 .environmentObject(appState)
                 .environmentObject(language)
         }
+        .commands {
+            CommandGroup(after: .pasteboard) {
+                Button(language.localized("Edit Tags")) {
+                    TagPaletteController.shared.toggle()
+                }
+                .keyboardShortcut("t", modifiers: .command)
+            }
+        }
         Settings {
             SettingsView()
                 .environmentObject(language)

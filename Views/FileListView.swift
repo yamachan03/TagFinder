@@ -7,7 +7,6 @@ struct FileListView: View {
     @AppStorage("FileDisplayMode") private var fileDisplayModeRaw = FileDisplayMode.nameAndTags.rawValue
     @State private var filterText: String = ""
     @State private var hoveredFileURL: URL?
-    @State private var selectedFileURL: URL?
     private let quickLook = QuickLookController.shared
 
     private var tagColorLookup: [String: Int?] {
@@ -58,7 +57,7 @@ struct FileListView: View {
         } else if filteredFiles.isEmpty {
             emptyState(message: language.localized("No matching files"))
         } else {
-            List(filteredFiles, selection: $selectedFileURL) { file in
+            List(filteredFiles, selection: $appState.selectedFileURL) { file in
                 fileRow(file)
                     .tag(file.url)
             }
@@ -81,18 +80,28 @@ struct FileListView: View {
                 for url in urls { NSWorkspace.shared.open(url) }
             }
             .onKeyPress(.space) {
-                guard let selectedFileURL else { return .ignored }
+                guard let selectedFileURL = appState.selectedFileURL else { return .ignored }
                 if quickLook.isVisible {
                     quickLook.close()
                 } else {
-                    quickLook.onCurrentItemChange = { self.selectedFileURL = $0 }
+                    quickLook.onCurrentItemChange = { appState.selectedFileURL = $0 }
                     quickLook.present(urls: filteredFiles.map(\.url), currentItem: selectedFileURL)
                 }
                 return .handled
             }
-            .onChange(of: selectedFileURL) { _, newValue in
+            .onChange(of: appState.selectedFileURL) { _, newValue in
                 guard let newValue else { return }
                 quickLook.updateCurrentItem(newValue)
+            }
+            .toolbar {
+                ToolbarItem {
+                    Button {
+                        TagPaletteController.shared.toggle()
+                    } label: {
+                        Label(language.localized("Edit Tags"), systemImage: "tag")
+                    }
+                    .disabled(appState.selectedFileURL == nil)
+                }
             }
         }
     }

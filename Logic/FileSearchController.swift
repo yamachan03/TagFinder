@@ -29,6 +29,14 @@ final class FileSearchController: ObservableObject {
         }
     }
 
+    /// Replaces the tag list of one result row after a local tag edit, keeping the
+    /// row in place regardless of whether it still matches the current query --
+    /// removing it mid-edit would be jarring; the next search reconciles.
+    func updateTags(_ tags: [String], for url: URL) {
+        guard let index = files.firstIndex(where: { $0.url == url }) else { return }
+        files[index] = FoundFile(url: url, tags: tags)
+    }
+
     private func applyResults(_ items: [SpotlightQuery.Item], generation: Int) {
         guard generation == self.generation else { return }
 
