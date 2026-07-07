@@ -6,6 +6,7 @@ struct FileListView: View {
     @EnvironmentObject private var language: LanguageManager
     @AppStorage("FileDisplayMode") private var fileDisplayModeRaw = FileDisplayMode.nameAndTags.rawValue
     @State private var filterText: String = ""
+    @State private var hoveredFileURL: URL?
     @State private var selectedFileURL: URL?
     private let quickLook = QuickLookController.shared
 
@@ -104,6 +105,10 @@ struct FileListView: View {
 
     @ViewBuilder
     private func fileRow(_ file: FoundFile) -> some View {
+        // In name-only mode the chips stay hidden but reappear for the row
+        // under the mouse, so tags can still be checked without switching modes.
+        let displayMode = FileDisplayMode(rawValue: fileDisplayModeRaw) ?? .nameAndTags
+        let showsTags = displayMode == .nameAndTags || hoveredFileURL == file.url
         HStack {
             Image(nsImage: file.icon)
                 .resizable()
@@ -115,12 +120,19 @@ struct FileListView: View {
                     .foregroundStyle(.secondary)
             }
             Spacer()
-            if FileDisplayMode(rawValue: fileDisplayModeRaw) ?? .nameAndTags == .nameAndTags {
+            if showsTags {
                 HStack(spacing: 6) {
                     ForEach(file.tags, id: \.self) { tagName in
                         TagChipView(name: tagName, colorIndex: tagColorLookup[tagName] ?? nil)
                     }
                 }
+            }
+        }
+        .onHover { hovering in
+            if hovering {
+                hoveredFileURL = file.url
+            } else if hoveredFileURL == file.url {
+                hoveredFileURL = nil
             }
         }
     }
