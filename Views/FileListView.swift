@@ -22,6 +22,10 @@ struct FileListView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
+            if appState.searchMode == .advanced {
+                ExpressionBuilderView()
+                Divider()
+            }
             header
             Divider()
             content
@@ -31,7 +35,7 @@ struct FileListView: View {
 
     @ViewBuilder
     private var header: some View {
-        if !appState.selectedTagNames.isEmpty {
+        if appState.currentExpression != nil {
             HStack {
                 Text(headerText)
                     .font(.headline)
@@ -42,14 +46,13 @@ struct FileListView: View {
     }
 
     private var headerText: String {
-        let joiner = appState.matchMode == .and ? " AND " : " OR "
-        let tagList = appState.selectedTagNames.sorted().joined(separator: joiner)
-        return language.localizedDynamic("Header Items", args: [tagList, String(filteredFiles.count)])
+        let formula = appState.currentExpression?.displayString ?? ""
+        return language.localizedDynamic("Header Items", args: [formula, String(filteredFiles.count)])
     }
 
     @ViewBuilder
     private var content: some View {
-        if appState.selectedTagNames.isEmpty {
+        if appState.currentExpression == nil {
             emptyState(message: language.localized("Select tags to search"))
         } else if appState.fileSearchController.isSearching {
             ProgressView()

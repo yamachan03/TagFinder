@@ -6,7 +6,12 @@
 
 ---
 
-## プラン1: 複雑な論理式によるファイル抽出 — `(A and B) or (C and D) or E`
+## プラン1: 複雑な論理式によるファイル抽出 — `(A and B) or (C and D) or E` ✅ 実装済み（2026-07-07）
+
+> B案（グループビルダー）で実装。`Models/TagExpression.swift`（AST・クエリ/表示文字列の再帰生成）、
+> `Models/ExpressionGroup.swift`、`Views/ExpressionBuilderView.swift` を参照。
+> シンプルモードも内部的にASTへ統一済み（`AppState.currentExpression`）。
+> NOT対応と検索条件の保存は未実装（将来拡張）。
 
 ### 実現性
 

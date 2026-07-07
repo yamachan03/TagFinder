@@ -15,6 +15,9 @@
 		171E0BB67D67ED3D69584F97 /* TagSidebarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8764A9EBBBC778831756DF8 /* TagSidebarView.swift */; };
 		17C5BD1150CD928EF5C205B6 /* FileSearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B40BAE1683E2AD5AECC30B7E /* FileSearchController.swift */; };
 		1C5CA94B79FC97B04F7017C2 /* MatchMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4604E218E49F81E5FC533B8 /* MatchMode.swift */; };
+		2DD8C6871EBC230AD5F2FD95 /* TagExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF66D08E663570C182CC1F02 /* TagExpression.swift */; };
+		3350448FADF79F5B09336973 /* ExpressionBuilderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD90858D4C6F7D032C8049DF /* ExpressionBuilderView.swift */; };
+		3B5E18440BEBA0AC624BA513 /* TagExpressionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47FFA3975CFC3300ACE80F0E /* TagExpressionTests.swift */; };
 		4BF4216B9E7944D4550FD48F /* TagChipView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12195800EDE0FCEF221E6384 /* TagChipView.swift */; };
 		57F37FBAE4DEE44FB2179DE4 /* TagDisplayMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02435B10B1F4FD07AED19AA5 /* TagDisplayMode.swift */; };
 		5B7BD807C14C604BA63BC2BE /* TagPaletteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A036D97A0B75BE519027E3 /* TagPaletteView.swift */; };
@@ -23,9 +26,9 @@
 		789EE50E86F6D211FCCD0761 /* FinderTagWriterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A759F685D9CAF6F3F0E7BE78 /* FinderTagWriterTests.swift */; };
 		7C4AFE9C888E09CACA535C80 /* FinderTag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB721DFC66793A810B2F229 /* FinderTag.swift */; };
 		8B4161D38F13BDCEABDD2DD4 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77C9BB6501F84203464B42F /* ContentView.swift */; };
+		8B70BC63A331D764DCE4E018 /* ExpressionGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42EAA5C0AF2F6A486A0962FC /* ExpressionGroup.swift */; };
 		8D4278DF19498941F6B3CC6B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E3B37FB28F276935C9705B5A /* Assets.xcassets */; };
 		9A13CBC9686B0A2138C7353D /* LanguageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E717C55640FF162DB60D6E78 /* LanguageManager.swift */; };
-		A282317787ADF583681A456B /* FileSearchQueryStringTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 599153824268F418F2C8261A /* FileSearchQueryStringTests.swift */; };
 		A32FC64382C6567E3684A7AC /* TagRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4551A47D4C389D069AC8BD2 /* TagRepository.swift */; };
 		A3AFBF50D7829AFD13CEE10B /* FinderTagWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09AEF24AD48AD1DAD7EC3A02 /* FinderTagWriter.swift */; };
 		BBFFB8809623522318D07C8E /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65C50E17FFDE51A24D6A4A79 /* AppState.swift */; };
@@ -58,10 +61,11 @@
 		1B84829137C8DB124674AA1B /* SpotlightQuery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotlightQuery.swift; sourceTree = "<group>"; };
 		37C14F63723621FF8D3BB733 /* TagPaletteController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagPaletteController.swift; sourceTree = "<group>"; };
 		3889F7452FB029334AAB8DC4 /* TagFinderApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagFinderApp.swift; sourceTree = "<group>"; };
+		42EAA5C0AF2F6A486A0962FC /* ExpressionGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpressionGroup.swift; sourceTree = "<group>"; };
 		477977737BF4B43BA0987CF9 /* QuickLookController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickLookController.swift; sourceTree = "<group>"; };
+		47FFA3975CFC3300ACE80F0E /* TagExpressionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagExpressionTests.swift; sourceTree = "<group>"; };
 		486831EE4819A1AA074A8D38 /* FinderTagColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinderTagColor.swift; sourceTree = "<group>"; };
 		57F81E9952F2740C0FDB9286 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
-		599153824268F418F2C8261A /* FileSearchQueryStringTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileSearchQueryStringTests.swift; sourceTree = "<group>"; };
 		64C7221240F935724DCCB138 /* TagFinderTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TagFinderTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		65C50E17FFDE51A24D6A4A79 /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
 		7E975D0BD9260326F6E3ABDD /* FileListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileListView.swift; sourceTree = "<group>"; };
@@ -73,8 +77,10 @@
 		B40BAE1683E2AD5AECC30B7E /* FileSearchController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileSearchController.swift; sourceTree = "<group>"; };
 		B77C9BB6501F84203464B42F /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		BBCDEC5AE2299840337CA2E6 /* FileDisplayMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileDisplayMode.swift; sourceTree = "<group>"; };
+		BD90858D4C6F7D032C8049DF /* ExpressionBuilderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpressionBuilderView.swift; sourceTree = "<group>"; };
 		D4604E218E49F81E5FC533B8 /* MatchMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchMode.swift; sourceTree = "<group>"; };
 		D7A036D97A0B75BE519027E3 /* TagPaletteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagPaletteView.swift; sourceTree = "<group>"; };
+		DF66D08E663570C182CC1F02 /* TagExpression.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagExpression.swift; sourceTree = "<group>"; };
 		E3B37FB28F276935C9705B5A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E4551A47D4C389D069AC8BD2 /* TagRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagRepository.swift; sourceTree = "<group>"; };
 		E66AD8EE8E819096F9E31134 /* FlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlowLayout.swift; sourceTree = "<group>"; };
@@ -101,9 +107,9 @@
 		6EBC97C02ABA506D454885B1 /* TagFinderTests */ = {
 			isa = PBXGroup;
 			children = (
-				599153824268F418F2C8261A /* FileSearchQueryStringTests.swift */,
 				F220A931BB80747A912BB578 /* FinderTagColorTests.swift */,
 				A759F685D9CAF6F3F0E7BE78 /* FinderTagWriterTests.swift */,
+				47FFA3975CFC3300ACE80F0E /* TagExpressionTests.swift */,
 				8E3BF465CBC632D578AFDC1D /* TagRepositoryTests.swift */,
 			);
 			path = TagFinderTests;
@@ -138,6 +144,7 @@
 			isa = PBXGroup;
 			children = (
 				B77C9BB6501F84203464B42F /* ContentView.swift */,
+				BD90858D4C6F7D032C8049DF /* ExpressionBuilderView.swift */,
 				7E975D0BD9260326F6E3ABDD /* FileListView.swift */,
 				E66AD8EE8E819096F9E31134 /* FlowLayout.swift */,
 				8A2BDB4B9DA00C5B99918161 /* FullDiskAccessPromptView.swift */,
@@ -154,11 +161,13 @@
 		E26E42AB35CD53C91FBBADAF /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				42EAA5C0AF2F6A486A0962FC /* ExpressionGroup.swift */,
 				BBCDEC5AE2299840337CA2E6 /* FileDisplayMode.swift */,
 				8BB721DFC66793A810B2F229 /* FinderTag.swift */,
 				0F1EF6FE137558B22E2CAA90 /* FoundFile.swift */,
 				D4604E218E49F81E5FC533B8 /* MatchMode.swift */,
 				02435B10B1F4FD07AED19AA5 /* TagDisplayMode.swift */,
+				DF66D08E663570C182CC1F02 /* TagExpression.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -259,6 +268,8 @@
 			files = (
 				BBFFB8809623522318D07C8E /* AppState.swift in Sources */,
 				8B4161D38F13BDCEABDD2DD4 /* ContentView.swift in Sources */,
+				3350448FADF79F5B09336973 /* ExpressionBuilderView.swift in Sources */,
+				8B70BC63A331D764DCE4E018 /* ExpressionGroup.swift in Sources */,
 				BC073B8BE190CA6B7EF90AC4 /* ExtendedAttributeReader.swift in Sources */,
 				F2D54B50E1318715E469F649 /* FileDisplayMode.swift in Sources */,
 				6CBC04C80BF4C30FBDA2A690 /* FileListView.swift in Sources */,
@@ -277,6 +288,7 @@
 				0F86164588001F6B14C7D236 /* SpotlightQuery.swift in Sources */,
 				4BF4216B9E7944D4550FD48F /* TagChipView.swift in Sources */,
 				57F37FBAE4DEE44FB2179DE4 /* TagDisplayMode.swift in Sources */,
+				2DD8C6871EBC230AD5F2FD95 /* TagExpression.swift in Sources */,
 				F893761A9E5A464FCBC6D892 /* TagFinderApp.swift in Sources */,
 				FEA0501E2E80B44D1EEB0ABE /* TagPaletteController.swift in Sources */,
 				5B7BD807C14C604BA63BC2BE /* TagPaletteView.swift in Sources */,
@@ -289,9 +301,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A282317787ADF583681A456B /* FileSearchQueryStringTests.swift in Sources */,
 				FADA0480C2AE60041AB275AE /* FinderTagColorTests.swift in Sources */,
 				789EE50E86F6D211FCCD0761 /* FinderTagWriterTests.swift in Sources */,
+				3B5E18440BEBA0AC624BA513 /* TagExpressionTests.swift in Sources */,
 				6BB5D65340BB12C3DD0E35B8 /* TagRepositoryTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

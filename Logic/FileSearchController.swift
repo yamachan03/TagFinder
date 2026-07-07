@@ -12,11 +12,11 @@ final class FileSearchController: ObservableObject {
     /// search are discarded instead of overwriting newer state.
     private var generation = 0
 
-    func updateSearch(selectedTags: Set<String>, mode: MatchMode) {
+    func updateSearch(expression: TagExpression?) {
         generation += 1
         let currentGeneration = generation
 
-        guard let queryString = Self.buildQueryString(tags: selectedTags.sorted(), mode: mode) else {
+        guard let queryString = expression?.queryString else {
             files = []
             isSearching = false
             return
@@ -46,16 +46,4 @@ final class FileSearchController: ObservableObject {
         isSearching = false
     }
 
-    /// Pure query-string building logic, independent of MDQuery, so it can be unit
-    /// tested against expected mdfind-syntax strings. Spotlight's multivalued-attribute
-    /// semantics make `kMDItemUserTags == 'X'` mean "any tag on the file equals X",
-    /// which is exactly the per-tag match needed here. Tag names are escaped via
-    /// SpotlightQuery.escapeValue, never interpolated raw.
-    nonisolated static func buildQueryString(tags: [String], mode: MatchMode) -> String? {
-        guard !tags.isEmpty else { return nil }
-        let subqueries = tags.map { "kMDItemUserTags == '\(SpotlightQuery.escapeValue($0))'" }
-        guard subqueries.count > 1 else { return subqueries[0] }
-        let joiner = mode == .and ? " && " : " || "
-        return subqueries.joined(separator: joiner)
-    }
 }

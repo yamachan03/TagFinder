@@ -21,15 +21,27 @@ struct TagSidebarView: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            Picker("Match", selection: $appState.matchMode) {
-                ForEach(MatchMode.allCases) { mode in
-                    Text(mode.rawValue).tag(mode)
+            Picker("Search Mode", selection: $appState.searchMode) {
+                ForEach(SearchMode.allCases) { mode in
+                    Text(language.localized(mode.labelKey)).tag(mode)
                 }
             }
             .pickerStyle(.segmented)
             .labelsHidden()
             .padding([.horizontal, .top])
             .padding(.bottom, 8)
+
+            if appState.searchMode == .simple {
+                Picker("Match", selection: $appState.matchMode) {
+                    ForEach(MatchMode.allCases) { mode in
+                        Text(mode.rawValue).tag(mode)
+                    }
+                }
+                .pickerStyle(.segmented)
+                .labelsHidden()
+                .padding(.horizontal)
+                .padding(.bottom, 8)
+            }
 
             HStack(spacing: 4) {
                 Image(systemName: "magnifyingglass")
@@ -89,7 +101,7 @@ struct TagSidebarView: View {
             Button(language.localized("Clear Selection")) {
                 appState.clearSelection()
             }
-            .disabled(appState.selectedTagNames.isEmpty)
+            .disabled(appState.selectionIsEmpty)
             .padding(.vertical, 8)
         }
         .navigationTitle(language.localized("Tags"))
@@ -104,9 +116,25 @@ struct TagSidebarView: View {
         }
     }
 
+    /// Selection highlight: simple mode reflects the flat selection; advanced
+    /// mode highlights tags used anywhere in the expression.
+    private func isHighlighted(_ tag: FinderTag) -> Bool {
+        switch appState.searchMode {
+        case .simple: return appState.selectedTagNames.contains(tag.name)
+        case .advanced: return appState.expressionContains(tag.name)
+        }
+    }
+
+    private func handleTap(_ tag: FinderTag) {
+        switch appState.searchMode {
+        case .simple: appState.toggle(tag: tag)
+        case .advanced: appState.toggleTagInActiveGroup(tag.name)
+        }
+    }
+
     @ViewBuilder
     private func tagRow(_ tag: FinderTag) -> some View {
-        let isSelected = appState.selectedTagNames.contains(tag.name)
+        let isSelected = isHighlighted(tag)
         HStack {
             Circle()
                 .fill(FinderTagColor.color(for: tag.colorIndex))
@@ -122,13 +150,13 @@ struct TagSidebarView: View {
         }
         .contentShape(Rectangle())
         .onTapGesture {
-            appState.toggle(tag: tag)
+            handleTap(tag)
         }
     }
 
     @ViewBuilder
     private func tagChip(_ tag: FinderTag) -> some View {
-        let isSelected = appState.selectedTagNames.contains(tag.name)
+        let isSelected = isHighlighted(tag)
         HStack(spacing: 5) {
             Circle()
                 .fill(FinderTagColor.color(for: tag.colorIndex))
@@ -146,7 +174,7 @@ struct TagSidebarView: View {
         .foregroundStyle(isSelected ? Color.white : Color.primary)
         .contentShape(Capsule())
         .onTapGesture {
-            appState.toggle(tag: tag)
+            handleTap(tag)
         }
     }
 }

@@ -29,6 +29,84 @@ final class AppState: ObservableObject {
         didSet { runSearch() }
     }
 
+    // MARK: - Advanced search (expression builder)
+
+    /// Simple mode keeps the flat tag selection above; advanced mode builds a
+    /// two-level expression from groups. Both compile to a TagExpression.
+    @Published var searchMode: SearchMode = .simple {
+        didSet {
+            if searchMode == .advanced && expressionGroups.isEmpty {
+                // Carry the simple selection over as the first group so the
+                // transition feels continuous.
+                let seeded = ExpressionGroup(mode: matchMode, tags: selectedTagNames.sorted())
+                expressionGroups = [seeded]
+                activeGroupID = seeded.id
+            }
+            runSearch()
+        }
+    }
+    @Published var expressionGroups: [ExpressionGroup] = [] {
+        didSet { if searchMode == .advanced { runSearch() } }
+    }
+    /// Group that sidebar tag clicks are added to while in advanced mode.
+    @Published var activeGroupID: UUID?
+    @Published var outerMode: MatchMode = .or {
+        didSet { if searchMode == .advanced { runSearch() } }
+    }
+
+    /// The expression the current UI state represents; nil means "no search".
+    var currentExpression: TagExpression? {
+        switch searchMode {
+        case .simple:
+            guard !selectedTagNames.isEmpty else { return nil }
+            let leaves = selectedTagNames.sorted().map(TagExpression.tag)
+            return matchMode == .and ? .and(leaves) : .or(leaves)
+        case .advanced:
+            let groups = expressionGroups.compactMap(\.expression)
+            guard !groups.isEmpty else { return nil }
+            return outerMode == .and ? .and(groups) : .or(groups)
+        }
+    }
+
+    func addGroup() {
+        let group = ExpressionGroup()
+        expressionGroups.append(group)
+        activeGroupID = group.id
+    }
+
+    func removeGroup(_ id: UUID) {
+        expressionGroups.removeAll { $0.id == id }
+        if activeGroupID == id { activeGroupID = expressionGroups.last?.id }
+    }
+
+    func setGroupMode(_ id: UUID, _ mode: MatchMode) {
+        guard let index = expressionGroups.firstIndex(where: { $0.id == id }) else { return }
+        expressionGroups[index].mode = mode
+    }
+
+    func removeTag(_ name: String, fromGroup id: UUID) {
+        guard let index = expressionGroups.firstIndex(where: { $0.id == id }) else { return }
+        expressionGroups[index].tags.removeAll { $0 == name }
+    }
+
+    /// Sidebar tag click in advanced mode: toggles the tag within the active
+    /// group (creating a group first if none exists).
+    func toggleTagInActiveGroup(_ name: String) {
+        if expressionGroups.isEmpty { addGroup() }
+        let index = expressionGroups.firstIndex(where: { $0.id == activeGroupID })
+            ?? expressionGroups.indices.last!
+        if expressionGroups[index].tags.contains(name) {
+            expressionGroups[index].tags.removeAll { $0 == name }
+        } else {
+            expressionGroups[index].tags.append(name)
+        }
+    }
+
+    /// Whether the tag appears anywhere in the advanced expression (sidebar highlight).
+    func expressionContains(_ name: String) -> Bool {
+        expressionGroups.contains { $0.tags.contains(name) }
+    }
+
     /// The search-result row currently selected in the file list. Lives here (not
     /// in the view) so Quick Look navigation and the tag palette can follow it.
     @Published var selectedFileURL: URL?
@@ -49,7 +127,22 @@ final class AppState: ObservableObject {
     }
 
     func clearSelection() {
-        selectedTagNames.removeAll()
+        switch searchMode {
+        case .simple:
+            selectedTagNames.removeAll()
+        case .advanced:
+            let empty = ExpressionGroup()
+            expressionGroups = [empty]
+            activeGroupID = empty.id
+        }
+    }
+
+    /// True when there is nothing to clear (drives the clear button's state).
+    var selectionIsEmpty: Bool {
+        switch searchMode {
+        case .simple: return selectedTagNames.isEmpty
+        case .advanced: return expressionGroups.allSatisfy { $0.tags.isEmpty }
+        }
     }
 
     /// Tags currently on the given search-result file (from the in-memory model).
@@ -89,6 +182,6 @@ final class AppState: ObservableObject {
     }
 
     private func runSearch() {
-        fileSearchController.updateSearch(selectedTags: selectedTagNames, mode: matchMode)
+        fileSearchController.updateSearch(expression: currentExpression)
     }
 }

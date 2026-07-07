@@ -67,6 +67,13 @@ final class LanguageManager: ObservableObject {
         "Name, path, and tags": [.english: "Name, path, and tags", .japanese: "名前・パス・タグ"],
         "Name and path only": [.english: "Name and path only", .japanese: "名前・パスのみ"],
 
+        // Advanced search (expression builder)
+        "Simple": [.english: "Simple", .japanese: "シンプル"],
+        "Advanced": [.english: "Advanced", .japanese: "詳細"],
+        "Add Group": [.english: "Add Group", .japanese: "グループを追加"],
+        "Groups combined with": [.english: "Combine groups with", .japanese: "グループ間の結合"],
+        "Click sidebar tags to add": [.english: "Click tags in the sidebar to add", .japanese: "サイドバーのタグをクリックして追加"],
+
         // Tag palette
         "Edit Tags": [.english: "Edit Tags", .japanese: "タグを編集"],
         "No file selected": [.english: "No file selected", .japanese: "ファイルが選択されていません"],
