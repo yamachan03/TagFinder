@@ -12,3 +12,6 @@ DerivedData/
 TagFinder.app/
 *.app.zip
 *.dmg
+
+# Notarization build output
+build/
