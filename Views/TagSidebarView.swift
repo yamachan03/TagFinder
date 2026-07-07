@@ -2,7 +2,13 @@ import SwiftUI
 
 struct TagSidebarView: View {
     @EnvironmentObject private var appState: AppState
+    @EnvironmentObject private var language: LanguageManager
+    @AppStorage("TagDisplayMode") private var tagDisplayModeRaw = TagDisplayMode.listWithCount.rawValue
     @State private var filterText = ""
+
+    private var displayMode: TagDisplayMode {
+        TagDisplayMode(rawValue: tagDisplayModeRaw) ?? .listWithCount
+    }
 
     /// Tags matching the sidebar filter field. Selected tags stay selected even
     /// when the filter hides them; filtering only affects what is listed.
@@ -15,7 +21,7 @@ struct TagSidebarView: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            Picker("一致条件", selection: $appState.matchMode) {
+            Picker("Match", selection: $appState.matchMode) {
                 ForEach(MatchMode.allCases) { mode in
                     Text(mode.rawValue).tag(mode)
                 }
@@ -28,7 +34,7 @@ struct TagSidebarView: View {
             HStack(spacing: 4) {
                 Image(systemName: "magnifyingglass")
                     .foregroundStyle(.secondary)
-                TextField("タグ名で絞り込み", text: $filterText)
+                TextField(language.localized("Filter by tag name"), text: $filterText)
                     .textFieldStyle(.plain)
                 if !filterText.isEmpty {
                     Button {
@@ -50,35 +56,49 @@ struct TagSidebarView: View {
                 ProgressView()
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
             } else if appState.tagRepository.tags.isEmpty {
-                Text("タグが見つかりません")
+                Text(language.localized("No tags found"))
                     .foregroundStyle(.secondary)
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
             } else if visibleTags.isEmpty {
-                Text("一致するタグがありません")
+                Text(language.localized("No matching tags"))
                     .foregroundStyle(.secondary)
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
             } else {
-                List(visibleTags) { tag in
-                    tagRow(tag)
+                switch displayMode {
+                case .listWithCount:
+                    List(visibleTags) { tag in
+                        tagRow(tag)
+                    }
+                    .listStyle(.sidebar)
+                case .chipFlow:
+                    ScrollView {
+                        FlowLayout(spacing: 6) {
+                            ForEach(visibleTags) { tag in
+                                tagChip(tag)
+                            }
+                        }
+                        .padding(.horizontal)
+                        .padding(.vertical, 4)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                    }
                 }
-                .listStyle(.sidebar)
             }
 
             Divider()
 
-            Button("選択を解除") {
+            Button(language.localized("Clear Selection")) {
                 appState.clearSelection()
             }
             .disabled(appState.selectedTagNames.isEmpty)
             .padding(.vertical, 8)
         }
-        .navigationTitle("タグ")
+        .navigationTitle(language.localized("Tags"))
         .toolbar {
             ToolbarItem {
                 Button {
                     appState.refreshTags()
                 } label: {
-                    Label("再スキャン", systemImage: "arrow.clockwise")
+                    Label(language.localized("Rescan"), systemImage: "arrow.clockwise")
                 }
             }
         }
@@ -101,6 +121,30 @@ struct TagSidebarView: View {
                 .opacity(isSelected ? 1 : 0)
         }
         .contentShape(Rectangle())
+        .onTapGesture {
+            appState.toggle(tag: tag)
+        }
+    }
+
+    @ViewBuilder
+    private func tagChip(_ tag: FinderTag) -> some View {
+        let isSelected = appState.selectedTagNames.contains(tag.name)
+        HStack(spacing: 5) {
+            Circle()
+                .fill(FinderTagColor.color(for: tag.colorIndex))
+                .frame(width: 8, height: 8)
+            Text(tag.name)
+                .font(.callout)
+                .lineLimit(1)
+        }
+        .padding(.horizontal, 9)
+        .padding(.vertical, 4)
+        .background(
+            isSelected ? AnyShapeStyle(Color.accentColor) : AnyShapeStyle(.quaternary.opacity(0.6)),
+            in: Capsule()
+        )
+        .foregroundStyle(isSelected ? Color.white : Color.primary)
+        .contentShape(Capsule())
         .onTapGesture {
             appState.toggle(tag: tag)
         }

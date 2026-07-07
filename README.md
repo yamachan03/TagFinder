@@ -9,8 +9,9 @@ A macOS app for searching files by their Finder tags. Pick multiple tags from th
 - Lists every Finder tag on all local volumes (including external drives) with file counts
 - AND / OR filtering by multiple selected tags
 - Incremental filtering by tag name and by file name
-- Quick Look preview: select a result and press the space bar
+- Quick Look preview: select a result and press the space bar (up/down arrows switch the previewed file)
 - Double-click to open, right-click for "Reveal in Finder" / "Copy Path"
+- Settings (Cmd+,): switch the UI language (Japanese / English) and the sidebar tag display — list with file counts, or compact wrapped chips
 
 ## Requirements
 

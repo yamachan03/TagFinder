@@ -5,11 +5,17 @@ import SwiftUI
 struct TagFinderApp: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
     @StateObject private var appState = AppState()
+    @StateObject private var language = LanguageManager.shared
 
     var body: some Scene {
         WindowGroup {
             ContentView()
                 .environmentObject(appState)
+                .environmentObject(language)
+        }
+        Settings {
+            SettingsView()
+                .environmentObject(language)
         }
     }
 }

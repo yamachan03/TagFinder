@@ -3,6 +3,7 @@ import SwiftUI
 
 struct FileListView: View {
     @EnvironmentObject private var appState: AppState
+    @EnvironmentObject private var language: LanguageManager
     @State private var filterText: String = ""
     @State private var selectedFileURL: URL?
     private let quickLook = QuickLookController.shared
@@ -24,7 +25,7 @@ struct FileListView: View {
             Divider()
             content
         }
-        .searchable(text: $filterText, prompt: "ファイル名で絞り込み")
+        .searchable(text: $filterText, prompt: Text(language.localized("Filter by file name")))
     }
 
     @ViewBuilder
@@ -42,18 +43,18 @@ struct FileListView: View {
     private var headerText: String {
         let joiner = appState.matchMode == .and ? " AND " : " OR "
         let tagList = appState.selectedTagNames.sorted().joined(separator: joiner)
-        return "\(tagList) · \(filteredFiles.count)件"
+        return language.localizedDynamic("Header Items", args: [tagList, String(filteredFiles.count)])
     }
 
     @ViewBuilder
     private var content: some View {
         if appState.selectedTagNames.isEmpty {
-            emptyState(message: "タグを選択してください")
+            emptyState(message: language.localized("Select tags to search"))
         } else if appState.fileSearchController.isSearching {
             ProgressView()
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
         } else if filteredFiles.isEmpty {
-            emptyState(message: "一致するファイルがありません")
+            emptyState(message: language.localized("No matching files"))
         } else {
             List(filteredFiles, selection: $selectedFileURL) { file in
                 fileRow(file)
@@ -63,13 +64,13 @@ struct FileListView: View {
             // selection, so double-click (primaryAction) and the right-click menu
             // are attached selection-based instead.
             .contextMenu(forSelectionType: URL.self) { urls in
-                Button("Finderで表示") {
+                Button(language.localized("Reveal in Finder")) {
                     NSWorkspace.shared.activateFileViewerSelecting(Array(urls))
                 }
-                Button("開く") {
+                Button(language.localized("Open")) {
                     for url in urls { NSWorkspace.shared.open(url) }
                 }
-                Button("パスをコピー") {
+                Button(language.localized("Copy Path")) {
                     let pasteboard = NSPasteboard.general
                     pasteboard.clearContents()
                     pasteboard.setString(urls.map(\.path).joined(separator: "\n"), forType: .string)

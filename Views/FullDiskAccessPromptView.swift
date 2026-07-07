@@ -3,23 +3,24 @@ import SwiftUI
 struct FullDiskAccessPromptView: View {
     @Binding var isPresented: Bool
     @EnvironmentObject private var appState: AppState
+    @EnvironmentObject private var language: LanguageManager
 
     var body: some View {
         VStack(spacing: 16) {
             Image(systemName: "lock.shield")
                 .font(.system(size: 40))
                 .foregroundStyle(.secondary)
-            Text("フルディスクアクセスが必要です")
+            Text(language.localized("Full Disk Access Required"))
                 .font(.title2)
-            Text("TagFinderがすべてのボリューム（外付けドライブ含む）のFinderタグを検索するには、システム設定でフルディスクアクセスを許可してください。")
+            Text(language.localized("FDA Description"))
                 .multilineTextAlignment(.center)
                 .foregroundStyle(.secondary)
                 .frame(maxWidth: 360)
             HStack {
-                Button("システム設定を開く") {
+                Button(language.localized("Open System Settings")) {
                     FullDiskAccessChecker.openFullDiskAccessSettings()
                 }
-                Button("再スキャン") {
+                Button(language.localized("Rescan")) {
                     appState.refreshTags()
                     isPresented = false
                 }
