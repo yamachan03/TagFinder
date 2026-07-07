@@ -11,7 +11,7 @@ A macOS app for searching files by their Finder tags. Pick multiple tags from th
 - Incremental filtering by tag name and by file name
 - Quick Look preview: select a result and press the space bar (up/down arrows switch the previewed file)
 - Double-click to open, right-click for "Reveal in Finder" / "Copy Path"
-- Settings (Cmd+,): switch the UI language (Japanese / English) and the sidebar tag display — list with file counts, or compact wrapped chips
+- Settings (Cmd+,): switch the UI language (Japanese / English), the sidebar tag display (list with file counts, or compact wrapped chips), and the result rows (with all tags on each file, or name and path only)
 
 ## Requirements
 

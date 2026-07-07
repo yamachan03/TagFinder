@@ -29,6 +29,7 @@
 		BC073B8BE190CA6B7EF90AC4 /* ExtendedAttributeReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2EE2B0CE847C6BA521726E1 /* ExtendedAttributeReader.swift */; };
 		D362CAAA1B2A2FE6507AB2B4 /* FullDiskAccessChecker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 102C9CD10AFC5DA294255A8A /* FullDiskAccessChecker.swift */; };
 		D8284D8A3CA80879D3B786B9 /* FoundFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F1EF6FE137558B22E2CAA90 /* FoundFile.swift */; };
+		F2D54B50E1318715E469F649 /* FileDisplayMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBCDEC5AE2299840337CA2E6 /* FileDisplayMode.swift */; };
 		F5F57833AEBF470ED56A9568 /* FlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = E66AD8EE8E819096F9E31134 /* FlowLayout.swift */; };
 		F893761A9E5A464FCBC6D892 /* TagFinderApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3889F7452FB029334AAB8DC4 /* TagFinderApp.swift */; };
 		FADA0480C2AE60041AB275AE /* FinderTagColorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F220A931BB80747A912BB578 /* FinderTagColorTests.swift */; };
@@ -64,6 +65,7 @@
 		A2EE2B0CE847C6BA521726E1 /* ExtendedAttributeReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtendedAttributeReader.swift; sourceTree = "<group>"; };
 		B40BAE1683E2AD5AECC30B7E /* FileSearchController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileSearchController.swift; sourceTree = "<group>"; };
 		B77C9BB6501F84203464B42F /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		BBCDEC5AE2299840337CA2E6 /* FileDisplayMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileDisplayMode.swift; sourceTree = "<group>"; };
 		D4604E218E49F81E5FC533B8 /* MatchMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchMode.swift; sourceTree = "<group>"; };
 		E3B37FB28F276935C9705B5A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E4551A47D4C389D069AC8BD2 /* TagRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagRepository.swift; sourceTree = "<group>"; };
@@ -140,6 +142,7 @@
 		E26E42AB35CD53C91FBBADAF /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				BBCDEC5AE2299840337CA2E6 /* FileDisplayMode.swift */,
 				8BB721DFC66793A810B2F229 /* FinderTag.swift */,
 				0F1EF6FE137558B22E2CAA90 /* FoundFile.swift */,
 				D4604E218E49F81E5FC533B8 /* MatchMode.swift */,
@@ -245,6 +248,7 @@
 				BBFFB8809623522318D07C8E /* AppState.swift in Sources */,
 				8B4161D38F13BDCEABDD2DD4 /* ContentView.swift in Sources */,
 				BC073B8BE190CA6B7EF90AC4 /* ExtendedAttributeReader.swift in Sources */,
+				F2D54B50E1318715E469F649 /* FileDisplayMode.swift in Sources */,
 				6CBC04C80BF4C30FBDA2A690 /* FileListView.swift in Sources */,
 				17C5BD1150CD928EF5C205B6 /* FileSearchController.swift in Sources */,
 				7C4AFE9C888E09CACA535C80 /* FinderTag.swift in Sources */,

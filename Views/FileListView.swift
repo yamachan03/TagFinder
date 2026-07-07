@@ -4,6 +4,7 @@ import SwiftUI
 struct FileListView: View {
     @EnvironmentObject private var appState: AppState
     @EnvironmentObject private var language: LanguageManager
+    @AppStorage("FileDisplayMode") private var fileDisplayModeRaw = FileDisplayMode.nameAndTags.rawValue
     @State private var filterText: String = ""
     @State private var selectedFileURL: URL?
     private let quickLook = QuickLookController.shared
@@ -114,9 +115,11 @@ struct FileListView: View {
                     .foregroundStyle(.secondary)
             }
             Spacer()
-            HStack(spacing: 6) {
-                ForEach(file.tags, id: \.self) { tagName in
-                    TagChipView(name: tagName, colorIndex: tagColorLookup[tagName] ?? nil)
+            if FileDisplayMode(rawValue: fileDisplayModeRaw) ?? .nameAndTags == .nameAndTags {
+                HStack(spacing: 6) {
+                    ForEach(file.tags, id: \.self) { tagName in
+                        TagChipView(name: tagName, colorIndex: tagColorLookup[tagName] ?? nil)
+                    }
                 }
             }
         }

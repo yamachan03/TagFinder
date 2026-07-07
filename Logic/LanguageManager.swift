@@ -63,6 +63,9 @@ final class LanguageManager: ObservableObject {
         "Tag Display": [.english: "Tag Display", .japanese: "タグの表示"],
         "List with file counts": [.english: "List with file counts", .japanese: "件数付きリスト"],
         "Tags only (wrap)": [.english: "Tags only (wrapped)", .japanese: "タグのみ（折り返し表示）"],
+        "File Display": [.english: "File Display", .japanese: "ファイルの表示"],
+        "Name, path, and tags": [.english: "Name, path, and tags", .japanese: "名前・パス・タグ"],
+        "Name and path only": [.english: "Name and path only", .japanese: "名前・パスのみ"],
     ]
 
     func localized(_ key: String) -> String {
