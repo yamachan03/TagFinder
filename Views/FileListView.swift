@@ -7,6 +7,8 @@ struct FileListView: View {
     @AppStorage("FileDisplayMode") private var fileDisplayModeRaw = FileDisplayMode.nameAndTags.rawValue
     @State private var filterText: String = ""
     @State private var hoveredFileURL: URL?
+    @State private var showingSaveSearchDialog = false
+    @State private var newSearchName = ""
     private let quickLook = QuickLookController.shared
 
     private var tagColorLookup: [String: Int?] {
@@ -31,6 +33,58 @@ struct FileListView: View {
             content
         }
         .searchable(text: $filterText, prompt: Text(language.localized("Filter by file name")))
+        // Toolbar and dialogs live on the outer container, not the List branch,
+        // so they don't vanish when the results area shows an empty state.
+        .toolbar {
+            ToolbarItem {
+                Menu {
+                    if appState.savedSearches.isEmpty {
+                        Text(language.localized("No saved searches"))
+                    } else {
+                        ForEach(appState.savedSearches) { saved in
+                            Button(saved.name) {
+                                appState.applySavedSearch(saved)
+                            }
+                            .help(saved.expression?.displayString ?? "")
+                        }
+                    }
+                    Divider()
+                    Button(language.localized("Save Current Search…")) {
+                        newSearchName = ""
+                        showingSaveSearchDialog = true
+                    }
+                    .disabled(appState.currentExpression == nil)
+                    if !appState.savedSearches.isEmpty {
+                        Menu(language.localized("Delete Saved Search")) {
+                            ForEach(appState.savedSearches) { saved in
+                                Button(saved.name, role: .destructive) {
+                                    appState.deleteSavedSearch(saved.id)
+                                }
+                            }
+                        }
+                    }
+                } label: {
+                    Label(language.localized("Saved Searches"), systemImage: "bookmark")
+                }
+            }
+            ToolbarItem {
+                Button {
+                    TagPaletteController.shared.toggle()
+                } label: {
+                    Label(language.localized("Edit Tags"), systemImage: "tag")
+                }
+                .disabled(appState.selectedFileURL == nil)
+            }
+        }
+        .alert(language.localized("Save Current Search"), isPresented: $showingSaveSearchDialog) {
+            TextField(language.localized("Search name"), text: $newSearchName)
+            Button(language.localized("Save")) {
+                appState.saveCurrentSearch(named: newSearchName)
+            }
+            Button(language.localized("Cancel"), role: .cancel) {}
+        } message: {
+            Text(appState.currentExpression?.displayString ?? "")
+        }
     }
 
     @ViewBuilder
@@ -95,16 +149,6 @@ struct FileListView: View {
             .onChange(of: appState.selectedFileURL) { _, newValue in
                 guard let newValue else { return }
                 quickLook.updateCurrentItem(newValue)
-            }
-            .toolbar {
-                ToolbarItem {
-                    Button {
-                        TagPaletteController.shared.toggle()
-                    } label: {
-                        Label(language.localized("Edit Tags"), systemImage: "tag")
-                    }
-                    .disabled(appState.selectedFileURL == nil)
-                }
             }
         }
     }

@@ -1,7 +1,7 @@
 import Foundation
 
 /// One tag term inside a group; `negated` turns it into a NOT (exclusion).
-struct GroupTerm: Identifiable, Equatable {
+struct GroupTerm: Identifiable, Equatable, Codable {
     var name: String
     var negated = false
 
@@ -30,7 +30,7 @@ struct ExpressionGroup: Identifiable, Equatable {
 }
 
 /// Which search UI is active in the sidebar.
-enum SearchMode: String, CaseIterable, Identifiable {
+enum SearchMode: String, CaseIterable, Identifiable, Codable {
     case simple
     case advanced
 

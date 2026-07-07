@@ -1,6 +1,6 @@
 import Foundation
 
-enum MatchMode: String, CaseIterable, Identifiable {
+enum MatchMode: String, CaseIterable, Identifiable, Codable {
     case and = "AND"
     case or = "OR"
 

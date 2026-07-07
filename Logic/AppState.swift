@@ -9,8 +9,13 @@ final class AppState: ObservableObject {
     let fileSearchController = FileSearchController()
 
     private var cancellables: Set<AnyCancellable> = []
+    private static let savedSearchesKey = "SavedSearches"
 
     init() {
+        if let data = UserDefaults.standard.data(forKey: Self.savedSearchesKey),
+           let decoded = try? JSONDecoder().decode([SavedSearch].self, from: data) {
+            savedSearches = decoded
+        }
         // Nested ObservableObjects don't propagate their @Published changes through
         // the parent automatically -- forward them so views observing AppState
         // re-render when tag discovery or search results change.
@@ -114,6 +119,56 @@ final class AppState: ObservableObject {
     /// Whether the tag appears anywhere in the advanced expression (sidebar highlight).
     func expressionContains(_ name: String) -> Bool {
         expressionGroups.contains { $0.terms.contains { $0.name == name } }
+    }
+
+    // MARK: - Saved searches
+
+    @Published private(set) var savedSearches: [SavedSearch] = [] {
+        didSet {
+            guard let data = try? JSONEncoder().encode(savedSearches) else { return }
+            UserDefaults.standard.set(data, forKey: Self.savedSearchesKey)
+        }
+    }
+
+    /// Saves the current condition under `name`; an existing search with the
+    /// same name is replaced (upsert), so re-saving updates in place.
+    func saveCurrentSearch(named rawName: String) {
+        let name = rawName.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !name.isEmpty, currentExpression != nil else { return }
+        let saved = SavedSearch(
+            name: name,
+            mode: searchMode,
+            matchMode: matchMode,
+            selectedTags: selectedTagNames.sorted(),
+            outerMode: outerMode,
+            groups: expressionGroups
+                .filter { !$0.terms.isEmpty }
+                .map { SavedSearch.Group(mode: $0.mode, terms: $0.terms) }
+        )
+        if let index = savedSearches.firstIndex(where: { $0.name == name }) {
+            savedSearches[index] = saved
+        } else {
+            savedSearches.append(saved)
+        }
+    }
+
+    /// Restores a saved condition into the (editable) builder UI and runs it.
+    func applySavedSearch(_ saved: SavedSearch) {
+        switch saved.mode {
+        case .simple:
+            matchMode = saved.matchMode
+            searchMode = .simple
+            selectedTagNames = Set(saved.selectedTags)
+        case .advanced:
+            outerMode = saved.outerMode
+            expressionGroups = saved.expressionGroups
+            activeGroupID = expressionGroups.last?.id
+            searchMode = .advanced
+        }
+    }
+
+    func deleteSavedSearch(_ id: SavedSearch.ID) {
+        savedSearches.removeAll { $0.id == id }
     }
 
     /// The search-result row currently selected in the file list. Lives here (not

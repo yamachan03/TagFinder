@@ -33,6 +33,8 @@
 		A3AFBF50D7829AFD13CEE10B /* FinderTagWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09AEF24AD48AD1DAD7EC3A02 /* FinderTagWriter.swift */; };
 		BBFFB8809623522318D07C8E /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65C50E17FFDE51A24D6A4A79 /* AppState.swift */; };
 		BC073B8BE190CA6B7EF90AC4 /* ExtendedAttributeReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2EE2B0CE847C6BA521726E1 /* ExtendedAttributeReader.swift */; };
+		C3F2DC2C8E627F920B067999 /* SavedSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4C4E4B23CF85A3FA62401E8 /* SavedSearch.swift */; };
+		D160EA500D407029F2A4F1ED /* SavedSearchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFDC43560FA04AC7ADA59DB6 /* SavedSearchTests.swift */; };
 		D362CAAA1B2A2FE6507AB2B4 /* FullDiskAccessChecker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 102C9CD10AFC5DA294255A8A /* FullDiskAccessChecker.swift */; };
 		D8284D8A3CA80879D3B786B9 /* FoundFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F1EF6FE137558B22E2CAA90 /* FoundFile.swift */; };
 		F2D54B50E1318715E469F649 /* FileDisplayMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBCDEC5AE2299840337CA2E6 /* FileDisplayMode.swift */; };
@@ -75,9 +77,11 @@
 		A2EE2B0CE847C6BA521726E1 /* ExtendedAttributeReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtendedAttributeReader.swift; sourceTree = "<group>"; };
 		A759F685D9CAF6F3F0E7BE78 /* FinderTagWriterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinderTagWriterTests.swift; sourceTree = "<group>"; };
 		B40BAE1683E2AD5AECC30B7E /* FileSearchController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileSearchController.swift; sourceTree = "<group>"; };
+		B4C4E4B23CF85A3FA62401E8 /* SavedSearch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedSearch.swift; sourceTree = "<group>"; };
 		B77C9BB6501F84203464B42F /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		BBCDEC5AE2299840337CA2E6 /* FileDisplayMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileDisplayMode.swift; sourceTree = "<group>"; };
 		BD90858D4C6F7D032C8049DF /* ExpressionBuilderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpressionBuilderView.swift; sourceTree = "<group>"; };
+		CFDC43560FA04AC7ADA59DB6 /* SavedSearchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedSearchTests.swift; sourceTree = "<group>"; };
 		D4604E218E49F81E5FC533B8 /* MatchMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchMode.swift; sourceTree = "<group>"; };
 		D7A036D97A0B75BE519027E3 /* TagPaletteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagPaletteView.swift; sourceTree = "<group>"; };
 		DF66D08E663570C182CC1F02 /* TagExpression.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagExpression.swift; sourceTree = "<group>"; };
@@ -109,6 +113,7 @@
 			children = (
 				F220A931BB80747A912BB578 /* FinderTagColorTests.swift */,
 				A759F685D9CAF6F3F0E7BE78 /* FinderTagWriterTests.swift */,
+				CFDC43560FA04AC7ADA59DB6 /* SavedSearchTests.swift */,
 				47FFA3975CFC3300ACE80F0E /* TagExpressionTests.swift */,
 				8E3BF465CBC632D578AFDC1D /* TagRepositoryTests.swift */,
 			);
@@ -166,6 +171,7 @@
 				8BB721DFC66793A810B2F229 /* FinderTag.swift */,
 				0F1EF6FE137558B22E2CAA90 /* FoundFile.swift */,
 				D4604E218E49F81E5FC533B8 /* MatchMode.swift */,
+				B4C4E4B23CF85A3FA62401E8 /* SavedSearch.swift */,
 				02435B10B1F4FD07AED19AA5 /* TagDisplayMode.swift */,
 				DF66D08E663570C182CC1F02 /* TagExpression.swift */,
 			);
@@ -284,6 +290,7 @@
 				9A13CBC9686B0A2138C7353D /* LanguageManager.swift in Sources */,
 				1C5CA94B79FC97B04F7017C2 /* MatchMode.swift in Sources */,
 				0F26BCA62957E2F213BCA52F /* QuickLookController.swift in Sources */,
+				C3F2DC2C8E627F920B067999 /* SavedSearch.swift in Sources */,
 				0EA256DEF111D70C21D5CCBF /* SettingsView.swift in Sources */,
 				0F86164588001F6B14C7D236 /* SpotlightQuery.swift in Sources */,
 				4BF4216B9E7944D4550FD48F /* TagChipView.swift in Sources */,
@@ -303,6 +310,7 @@
 			files = (
 				FADA0480C2AE60041AB275AE /* FinderTagColorTests.swift in Sources */,
 				789EE50E86F6D211FCCD0761 /* FinderTagWriterTests.swift in Sources */,
+				D160EA500D407029F2A4F1ED /* SavedSearchTests.swift in Sources */,
 				3B5E18440BEBA0AC624BA513 /* TagExpressionTests.swift in Sources */,
 				6BB5D65340BB12C3DD0E35B8 /* TagRepositoryTests.swift in Sources */,
 			);

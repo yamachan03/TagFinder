@@ -75,6 +75,16 @@ final class LanguageManager: ObservableObject {
         "Click sidebar tags to add": [.english: "Click tags in the sidebar to add", .japanese: "サイドバーのタグをクリックして追加"],
         "Toggle NOT hint": [.english: "Click to toggle NOT (exclude); x removes", .japanese: "クリックでNOT（除外）を切替、✕で削除"],
 
+        // Saved searches
+        "Saved Searches": [.english: "Saved Searches", .japanese: "保存した検索"],
+        "No saved searches": [.english: "No saved searches", .japanese: "保存された検索はありません"],
+        "Save Current Search…": [.english: "Save Current Search…", .japanese: "現在の条件を保存…"],
+        "Save Current Search": [.english: "Save Current Search", .japanese: "検索条件を保存"],
+        "Delete Saved Search": [.english: "Delete Saved Search", .japanese: "保存した検索を削除"],
+        "Search name": [.english: "Search name", .japanese: "検索条件の名前"],
+        "Save": [.english: "Save", .japanese: "保存"],
+        "Cancel": [.english: "Cancel", .japanese: "キャンセル"],
+
         // Tag palette
         "Edit Tags": [.english: "Edit Tags", .japanese: "タグを編集"],
         "No file selected": [.english: "No file selected", .japanese: "ファイルが選択されていません"],
